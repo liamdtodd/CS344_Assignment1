@@ -65,3 +65,14 @@ void add_back(struct Linked_List* list, struct movie* film) {
 	
 	list->length++;
 }
+
+void free_listelements(struct Linked_List* list) {
+	int x = 0;
+	for (x; x < list->length; x++) {
+		struct node* temp;
+		temp = list->head;
+		list->head = list->head->next;
+		free_movie(temp->video);
+		free(temp);
+	}
+}	
