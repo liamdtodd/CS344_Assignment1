@@ -14,9 +14,4 @@ struct node {
 	node* next;
 };
 
-node* node() {
-	video = create_movie();
-	next = NULL;
-}
-
 #endif
