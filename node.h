@@ -4,14 +4,16 @@
  * ***************/
 #ifndef NODE_H
 #define NODE_H
-#include <iostream>
-#include <movie.h>
+//#include <iostream>
+#include "movie.h"
 
-using namespace std;
+//using namespace std;
 
 struct node {
-	movie* video;
-	node* next;
+	struct movie* video;
+	struct node* next;
 };
+
+//struct node* create_node();
 
 #endif
