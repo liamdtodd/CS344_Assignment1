@@ -11,9 +11,11 @@
 
 using namespace std;
 
+/*
 struct moviebook {
 	struct movie* data;
 };
+*/
 
 struct movie {
 	char* title;
@@ -22,6 +24,7 @@ struct movie {
 	double rating;
 };
 
+/*
 moviebook* create_moviebook(int num) {
 	moviebook* book = malloc(num * sizeof(moviebook));
 	int x = 0;
@@ -29,6 +32,7 @@ moviebook* create_moviebook(int num) {
 		book[x].data = create_movie();
 	return book;
 }
+*/
 
 movie* create_movie() {
 	movie* film = malloc(sizeof(movie));
@@ -40,3 +44,12 @@ movie* create_movie() {
 	
 	return film;
 }
+
+void free_movie(movie* video) {
+	free(video.film);
+	free(video.language);
+	video.film = NULL;
+	video.language = NULL;
+}
+	
+#endif
