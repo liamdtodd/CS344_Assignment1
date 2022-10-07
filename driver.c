@@ -9,7 +9,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-int main() {
+int main(int argc, char* argv[]) {
+	if (argc != 2) {
+		printf("Not enough arguments entered! Example execution: 'a.out example.csv'\n");
+		return 0;
+	}
 	struct Linked_List* list = create_linkedlist();
 
 	free_listelements(list);
