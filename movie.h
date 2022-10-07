@@ -24,6 +24,8 @@ struct movie {
 	double rating;
 };
 
+movie* create_movie();
+void free_movie(movie* film);
 /*
 moviebook* create_moviebook(int num) {
 	moviebook* book = malloc(num * sizeof(moviebook));
@@ -32,7 +34,7 @@ moviebook* create_moviebook(int num) {
 		book[x].data = create_movie();
 	return book;
 }
-*/
+
 
 movie* create_movie() {
 	movie* film = malloc(sizeof(movie));
@@ -51,5 +53,5 @@ void free_movie(movie* video) {
 	video.film = NULL;
 	video.language = NULL;
 }
-	
+*/	
 #endif
