@@ -21,4 +21,5 @@ void insert_firstelement(struct Linked_List*, struct movie*);
 void add_front(struct Linked_List*, struct movie*);
 void add_back(struct Linked_List*, struct movie*);
 
+void free_listelements(struct Linked_List*);
 #endif
