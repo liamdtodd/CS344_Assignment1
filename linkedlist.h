@@ -6,12 +6,13 @@
 #define LINKEDlIST_H
 #include "node.h"
 #include "movie.h"
-//#include <iostream>
 #include <stdlib.h>
 
-//using namespace std;
-
-struct Linked_List;
+struct Linked_List {
+	int length;
+	struct node* head;
+	struct node* tail;
+};
 
 struct Linked_List* create_linkedlist();
 
