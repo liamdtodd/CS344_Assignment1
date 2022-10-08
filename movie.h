@@ -5,16 +5,17 @@
 
 #ifndef MOVIE_H
 #define MOIVE_H
-//#include <iostream>
 #include <string.h>
 #include <stdlib.h>
 
-//using namespace std;
-
-struct movie;
+struct movie/* {
+	char* title;
+	char* language;
+	int year;
+	double rating;
+}*/;
 
 struct movie* create_movie();
 void free_movie(struct movie* film);
-//struct movie& operator=(const struct movie&);
 
 #endif
