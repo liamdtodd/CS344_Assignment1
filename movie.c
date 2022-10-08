@@ -3,11 +3,9 @@
  * the .c implementation of movie.h
  * *****************/
 #include "movie.h"
-//#include <iostream>
 #include <stdlib.h>
 #include <string.h>
 
-//using namespace std;
 
 struct movie {
 	char* title;
@@ -16,6 +14,8 @@ struct movie {
 	double rating;
 };
 
+
+//creates the movie data, initialized
 struct movie* create_movie() {
 	struct movie* film = malloc(sizeof(struct movie));
 	
@@ -27,6 +27,7 @@ struct movie* create_movie() {
 	return film;
 }
 
+//frees all the dynamically allocated data of the movie struct
 void free_movie(struct movie* film) {
 	free(film->title);
 	free(film->language);
@@ -34,12 +35,3 @@ void free_movie(struct movie* film) {
 	film->language = NULL;
 }
 
-/*
-struct movie& operator=(const struct movie& obj) {
-	strcpy(title, obj->title);
-	year = obj->year;
-	strcpy(language, obj->language);	
-	rating = obj->rating;
-	return *this;
-}
-*/
