@@ -10,12 +10,25 @@
 #include <string.h>
 
 void readData(struct Linked_List* list, char* filepath) {
+	size_t length = -5;
+	size_t nread;	
+	char* dataline;
+
 	FILE* movieData = fopen(filepath, "r");
 	
 	if (movieData == NULL) {
 		fprintf(stderr, "Could not open file: %s\n", filepath);
 		exit(1);
 	}
+	
+	nread = getline(&dataline, &length, movieData);
+
+	while ((nread = getline(&dataline, &length, movieData)) != -1) {
+		struct movie* film = malloc(sizeof(struct movie));
+		printf("before getting data...\n");
+		fill_movieData(film, dataline);
+		add_back(list, film);		
+	}	
 
 	fclose(movieData);
 }
