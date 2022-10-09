@@ -13,7 +13,6 @@ void readData(struct Linked_List* list, char* filepath) {
 	size_t length = -5;
 	size_t nread;	
 	char* dataline = NULL;
-
 	FILE* movieData = fopen(filepath, "r");
 	
 	if (movieData == NULL) {
@@ -23,43 +22,98 @@ void readData(struct Linked_List* list, char* filepath) {
 	
 	nread = getline(&dataline, &length, movieData);
 
-//	struct movie* temp = malloc(sizeof(struct movie));
-
 	while ((nread = getline(&dataline, &length, movieData)) != -1) {
 		struct movie* temp = malloc(sizeof(struct movie));
-//		printf("before getting data...\n");
 		fill_movieData(temp, dataline);
 		add_back(list, temp);
-		//free(temp);
-		//temp = NULL;		
 	}	
 
-	//free(temp);
-	//temp = NULL;
 	free(dataline);
 	dataline = NULL;
 	fclose(movieData);
 }
 
+//this function will show the movies released from a specified year
+void moviesYear(struct Linked_List* list) {
+	int ans = 0;
+	printf("Please enter a year from 1900 to 2021, inclusive\n");
+	scanf("%d", &ans);
+
+	if ((ans < 1900) || (ans > 2021)) {
+		do {
+			printf("The number you entered is invalid: %d. Please enter a number from 1900-2021, inclusive\n", ans);
+			scanf("%d", &ans);
+		} while ((ans < 1900) || (ans > 2021));		//will repeatedly ask for value b/w 1900-2021 until successful
+	}	
+
+	printf("\nMovies from %d:\n", ans);
+	displayYear(list, ans);		//this function will go through the list and print the movies from the specified year
+}
+
+//this function will show the highest rated movie from each year
+void moviesYearRating(struct Linked_List* list) {
+
+}
+
+//this function will show the title and year of a movie from a specified language
+void movieLanguage(struct Linked_List* list) {
+
+}
+
+//This function will interact with the user's choice for how to display the movies
+//Once the choice is inputted, it will call the corresponding function to accomdate the user's request
+void userInteractive(struct Linked_List* list) {
+	int ans = 0;
+	
+	printf("1. Show movies released in a specified year\n");
+	printf("2. Show highest rated movie from each year\n");
+	printf("3. Show title and year of a movie from a specified language\n");
+	printf("4. Exit\n");
+	printf("\nPlease select an option: ");
+	scanf("%d", &ans);
+
+	while (ans != 4) {
+		if (ans == 1)
+			moviesYear(list);			//movies released in a specified year
+		else if (ans == 2)
+			moviesYearRating(list);			//highest rated movie from each year
+		else if (ans == 3)
+			movieLanguage(list);			//the title and year of a movie from a specified language
+		else {
+			do {
+				printf("You have entered an invalid number: %d. Please enter a number 1-4\n");
+				scanf("%d", &ans);
+			} while ((ans < 1) && (ans > 4));	//if user doesn't enter a number 1-4, will repeat until they do
+		}
+
+		if (ans != 4) {					//if the user initially entered an invalid number, and then 4, this will take care of that
+			printf("1. Show movies released in a specified year\n");
+			printf("2. Show highest rated movie from each year\n");
+			printf("3. Show title and year of a movie from a specified language\n");
+			printf("4. Exit\n");
+			printf("\nPlease select an option: ");
+			scanf("%d", &ans);
+		}				
+	}
+}
+
 int main(int argc, char* argv[]) {
 	if (argc != 2) {
-		printf("Not enough arguments entered! Example execution: 'a.out example.csv'\n");
+		printf("Wrong arguments entered! Example execution: 'a.out example.csv'\n");
 		return 0;
 	}							//ensuring that the program is started with a file name
 
 	char* filepath = argv[1];
 	struct Linked_List* list = create_linkedlist();
 
-	printf("node: %d\n", sizeof(struct node));
-	printf("movie: %d\n", sizeof(struct movie));
-	printf("list: %d\n", sizeof(struct Linked_List));
 	readData(list, filepath);
 	printf("Successfully read from %s and parsed through %d movies\n", filepath, list->length);
+
+	userInteractive(list);
 
 	free_listelements(list);
 	free(list);
 	list = NULL;
-	//free(filepath);
 
 	return 0;
 }
