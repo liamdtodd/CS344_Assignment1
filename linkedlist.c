@@ -6,6 +6,8 @@
 #include "movie.h"
 #include "linkedlist.h"
 #include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 /*
 struct Linked_List {
@@ -31,7 +33,32 @@ int check_empty(struct node* head_temp) {
 		return 1;	//1 is true
 	return 0;		//0 is false
 }
+/*
+//this function will turn a string containing an integer into an integer type var
+int string_to_int(int len, char* num) {
+	int val = 0;
+	int x = 0;
+	int temp = 0;	
 
+//	printf("before for loop...\n");
+	for (x; x < len; x++) {
+//		printf("%s\n", num);
+		temp = atoi(num[x]);
+		printf("temp assigned\n");	
+		temp = temp - 48;
+
+		if (x == 0)
+			val = temp ;		//base case for the first value
+		else {
+			val = val * 10;		//moves the value in the 1's place to the 10's place, 1's place back at 0
+			val = val + temp;	//assigns next integer value to 1's place
+		}
+	}
+
+	return val;
+}
+*/
+	
 //this function is specifically for inserting the first element to the linked list
 void insert_firstelement(struct Linked_List* list, struct movie* film) {
 	struct node* n1 = malloc(sizeof(struct node));
@@ -68,6 +95,33 @@ void add_back(struct Linked_List* list, struct movie* film) {
 	}
 	
 	list->length++;
+}
+
+//this function will display the movies from a specified year
+void displayYear(struct Linked_List* list, int year) {
+	int x = 0;
+	int i = 0;
+	int len = 0;
+	int localYear = 0;
+	int count = 0;
+	struct node* temp = list->head;
+
+	while (temp != NULL) {
+		len = strlen(temp->video->year);
+		localYear = atoi(temp->video->year);
+
+		if (localYear == year)
+			printf("%s\n", temp->video->title);
+		else 
+			count++;
+	
+		temp = temp->next;
+	}
+	
+	if (count == list->length)
+		printf("No movie data for the year: %d\n", year);
+
+	printf("\n");		
 }
 
 //this function frees all the dynamically allocated data associated with the linked list
