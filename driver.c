@@ -12,7 +12,7 @@
 void readData(struct Linked_List* list, char* filepath) {
 	size_t length = -5;
 	size_t nread;	
-	char* dataline;
+	char* dataline = NULL;
 
 	FILE* movieData = fopen(filepath, "r");
 	
@@ -23,13 +23,21 @@ void readData(struct Linked_List* list, char* filepath) {
 	
 	nread = getline(&dataline, &length, movieData);
 
+//	struct movie* temp = malloc(sizeof(struct movie));
+
 	while ((nread = getline(&dataline, &length, movieData)) != -1) {
-		struct movie* film = malloc(sizeof(struct movie));
-		printf("before getting data...\n");
-		fill_movieData(film, dataline);
-		add_back(list, film);		
+		struct movie* temp = malloc(sizeof(struct movie));
+//		printf("before getting data...\n");
+		fill_movieData(temp, dataline);
+		add_back(list, temp);
+		//free(temp);
+		//temp = NULL;		
 	}	
 
+	//free(temp);
+	//temp = NULL;
+	free(dataline);
+	dataline = NULL;
 	fclose(movieData);
 }
 
@@ -42,11 +50,16 @@ int main(int argc, char* argv[]) {
 	char* filepath = argv[1];
 	struct Linked_List* list = create_linkedlist();
 
+	printf("node: %d\n", sizeof(struct node));
+	printf("movie: %d\n", sizeof(struct movie));
+	printf("list: %d\n", sizeof(struct Linked_List));
 	readData(list, filepath);
 	printf("Successfully read from %s and parsed through %d movies\n", filepath, list->length);
 
 	free_listelements(list);
 	free(list);
+	list = NULL;
+	//free(filepath);
 
 	return 0;
 }
