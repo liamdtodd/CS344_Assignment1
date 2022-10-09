@@ -17,10 +17,13 @@ struct Linked_List {
 struct Linked_List* create_linkedlist();
 
 int check_empty(struct node*);
+//int string_to_int(int, char*);
 
 void insert_firstelement(struct Linked_List*, struct movie*);
 void add_front(struct Linked_List*, struct movie*);
 void add_back(struct Linked_List*, struct movie*);
+
+void displayYear(struct Linked_List*, int);
 
 void free_listelements(struct Linked_List*);
 #endif
