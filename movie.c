@@ -30,41 +30,45 @@ struct movie* create_movie() {
 }
 */
 void fill_movieData(struct movie* film, char* dataline) {
-	char* token;
-	char* tknptr;
+	char* token = NULL;
+	char* tknptr = NULL;
 
 	token = strtok_r(dataline, ",", &tknptr);
-	film->title = calloc((strlen(token) + 1), sizeof(char));
+	film->title = malloc((strlen(token) + 1)* sizeof(char));
 	strcpy(film->title, token);
-	printf("title data...\t%s\n", film->title);
+//	printf("title data...\t%s\n", film->title);
 
 	token = strtok_r(NULL, ",", &tknptr);
-	film->year = calloc((strlen(token) + 1), sizeof(char));
+	film->year = malloc((strlen(token) + 1)* sizeof(char));
 	strcpy(film->year, token);
-	printf("year data...\t%s\n", film->year);
+//	printf("year data...\t%s\n", film->year);
 
 	token = strtok_r(NULL, ",", &tknptr);
-	film->language = calloc((strlen(token) + 1), sizeof(char));
+	film->language = malloc((strlen(token) + 1)* sizeof(char));
 	strcpy(film->language, token);
-	printf("language data...\t%s\n", film->language);
+//	printf("language data...\t%s\n", film->language);
 
 	token = strtok_r(NULL, "\n", &tknptr);
-	film->rating = calloc((strlen(token) + 1), sizeof(char));
+	film->rating = malloc((strlen(token) + 1)* sizeof(char));
 	strcpy(film->rating, token);
-	printf("rating data...\t%s\n", film->rating);
+//	printf("rating data...\t%s\n", film->rating);
 
+//	free(token);
+//	free(tknptr);
 }
 	
 
 //frees all the dynamically allocated data of the movie struct
 void free_movie(struct movie* film) {
 	free(film->year);
-	free(film->rating);
-	free(film->title);
-	free(film->language);
-	film->title = NULL;
-	film->language = NULL;
 	film->year = NULL;
+	free(film->year);
+	film->year = NULL;
+	free(film->language);
+	film->language = NULL;
+	free(film->rating);
 	film->rating = NULL;
-}
 
+	free(film);
+	film = NULL;
+}
