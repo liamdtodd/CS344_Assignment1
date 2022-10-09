@@ -73,11 +73,14 @@ void add_back(struct Linked_List* list, struct movie* film) {
 //this function frees all the dynamically allocated data associated with the linked list
 void free_listelements(struct Linked_List* list) {
 	int x = 0;
+	struct node* temp = NULL;
 	for (x; x < list->length; x++) {
-		struct node* temp;
+		//struct node* temp;
 		temp = list->head;
 		list->head = list->head->next;
 		free_movie(temp->video);		//freeing the data within the node
 		free(temp);				//freeing the data in the linked list
+		temp = NULL;
 	}
+	list->length = 0;
 }	
