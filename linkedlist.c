@@ -9,14 +9,6 @@
 #include <stdio.h>
 #include <string.h>
 
-/*
-struct Linked_List {
-	int length;
-	struct node* head;
-	struct node* tail;
-};
-*/
-
 //this function dynamically creates the linked list
 struct Linked_List* create_linkedlist() {
 	struct Linked_List* list = malloc(sizeof(struct Linked_List));
@@ -33,36 +25,12 @@ int check_empty(struct node* head_temp) {
 		return 1;	//1 is true
 	return 0;		//0 is false
 }
-/*
-//this function will turn a string containing an integer into an integer type var
-int string_to_int(int len, char* num) {
-	int val = 0;
-	int x = 0;
-	int temp = 0;	
-
-//	printf("before for loop...\n");
-	for (x; x < len; x++) {
-//		printf("%s\n", num);
-		temp = atoi(num[x]);
-		printf("temp assigned\n");	
-		temp = temp - 48;
-
-		if (x == 0)
-			val = temp ;		//base case for the first value
-		else {
-			val = val * 10;		//moves the value in the 1's place to the 10's place, 1's place back at 0
-			val = val + temp;	//assigns next integer value to 1's place
-		}
-	}
-
-	return val;
-}
-*/
 	
 //this function is specifically for inserting the first element to the linked list
 void insert_firstelement(struct Linked_List* list, struct movie* film) {
 	struct node* n1 = malloc(sizeof(struct node));
 	n1->video = film;
+	n1->next = NULL;
 	
 	list->head = n1;
 	list->tail = n1;
@@ -100,30 +68,39 @@ void add_back(struct Linked_List* list, struct movie* film) {
 //this function will return 1 or 0 (true/false) if the movie contains the inputted language
 int movieLang(struct Linked_List* list, struct node* temp, char* lang) {
 	char* token = NULL;
+	char* subtoken = NULL;
 	char* tknptr = NULL;
-	char* tempstr = malloc((strlen(temp->video->language) + 1) * sizeof(char));
-	strcpy(tempstr, temp->video->language);
-	
-	token = strtok_r(tempstr, "[]", &tknptr);
-	strcpy(tempstr, token);
+	char* subtknptr = NULL;
+	char* tempstr = NULL;
+	int x;
 
-	token = strtok_r(tempstr, ";", &tknptr);
-	char* lang1 = malloc((strlen(token) + 1) * sizeof(char));
-	strcpy(lang1, token);
+	char* check_key;
+	char* longstr = malloc((strlen(temp->video->language) + 1) * sizeof(char));
+	strcpy(longstr, temp->video->language);
 
-	if (strcmp(lang1, lang) == 0) {
-		free(tempstr);
-		tempstr = NULL;
-		free(lang1);
-		lang1 = NULL;
-		return 1;
+	for (x = 1; ; x++, longstr = NULL) {
+		token = strtok_r(longstr, "[]", &tknptr);
+		if (token == NULL)
+			break;
+		
+		for (tempstr = token; ; tempstr = NULL) {
+			subtoken = strtok_r(tempstr, ";", &subtknptr);
+			if (subtoken == NULL)
+				break;
+			check_key = malloc((strlen(subtoken) + 1) * sizeof(char));
+			strcpy(check_key, subtoken);
+			if (strcmp(check_key, lang) == 0) {
+				token = NULL;
+				subtoken = NULL;
+				return 1;
+			}
+		}
 	}
+	
+	free(check_key);
+	check_key = NULL;
 
-	free(tempstr);
-	tempstr = NULL;
-	free(lang1);
-	lang1 = NULL;
-	return 0;
+	return 0;					//free memory, return that this movie does not have the specified language
 }
 
 //this function will display the movies from a specified year
@@ -155,7 +132,8 @@ void displayYear(struct Linked_List* list, int year) {
 void displayLang(struct Linked_List* list, char* lang) {
 	int count = 0;
 	int boolean = -1;
-	struct node* temp = list->head;
+	struct node* temp = malloc(sizeof(struct node));
+	temp = list->head;
 		
 	while (temp != NULL) {
 		boolean = movieLang(list, temp, lang);	//getting a true/false value (1 or 0) if movie has the language
@@ -171,6 +149,9 @@ void displayLang(struct Linked_List* list, char* lang) {
 	if (count == list->length)
 		printf("No movide data for the language: %s\n", lang);
 
+	free(temp);
+	temp = NULL;
+
 	printf("\n");
 }
 //this function frees all the dynamically allocated data associated with the linked list
@@ -182,7 +163,8 @@ void free_listelements(struct Linked_List* list) {
 		temp = list->head;
 		list->head = list->head->next;
 		free_movie(temp->video);		//freeing the data within the node
-		free(temp);				//freeing the data in the linked list
+		//free(temp->video);				//freeing the data in the linked list
+		free(temp);
 		temp = NULL;
 	}
 	list->length = 0;
