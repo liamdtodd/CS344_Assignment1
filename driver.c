@@ -57,7 +57,15 @@ void moviesYearRating(struct Linked_List* list) {
 
 //this function will show the title and year of a movie from a specified language
 void movieLanguage(struct Linked_List* list) {
+	char* lang = malloc(20 * sizeof(char));
+	printf("Please enter the language you'd like to search for: ");
+	scanf("%s", lang);
+	
+	printf("\nMovies in the language %s:\n", lang);
+	displayLang(list, lang);
 
+	free(lang);
+	lang = NULL;
 }
 
 //This function will interact with the user's choice for how to display the movies
