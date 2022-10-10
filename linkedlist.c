@@ -101,14 +101,28 @@ void add_back(struct Linked_List* list, struct movie* film) {
 int movieLang(struct Linked_List* list, struct node* temp, char* lang) {
 	char* token = NULL;
 	char* tknptr = NULL;
+	char* tempstr = malloc((strlen(temp->video->language) + 1) * sizeof(char));
+	strcpy(tempstr, temp->video->language);
 	
-	//do {
-		token = strtok_r(temp->video->language, "[", &tknptr);
-	//} while (token != NULL);
-	token = strtok_r(temp->video->language, ";", &tknptr);
+	token = strtok_r(tempstr, "[]", &tknptr);
+	strcpy(tempstr, token);
 
-	if (strcmp(token, lang) == 0)
-		return 1;	
+	token = strtok_r(tempstr, ";", &tknptr);
+	char* lang1 = malloc((strlen(token) + 1) * sizeof(char));
+	strcpy(lang1, token);
+
+	if (strcmp(lang1, lang) == 0) {
+		free(tempstr);
+		tempstr = NULL;
+		free(lang1);
+		lang1 = NULL;
+		return 1;
+	}
+
+	free(tempstr);
+	tempstr = NULL;
+	free(lang1);
+	lang1 = NULL;
 	return 0;
 }
 
@@ -148,6 +162,8 @@ void displayLang(struct Linked_List* list, char* lang) {
 		
 		if (boolean == 1) 
 			printf("%s %s\n", temp->video->year, temp->video->title);	//displays movie of the inputted language
+		else
+			count++;
 	
 		temp = temp->next;
 	}
