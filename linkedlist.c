@@ -97,10 +97,23 @@ void add_back(struct Linked_List* list, struct movie* film) {
 	list->length++;
 }
 
+//this function will return 1 or 0 (true/false) if the movie contains the inputted language
+int movieLang(struct Linked_List* list, struct node* temp, char* lang) {
+	char* token = NULL;
+	char* tknptr = NULL;
+	
+	//do {
+		token = strtok_r(temp->video->language, "[", &tknptr);
+	//} while (token != NULL);
+	token = strtok_r(temp->video->language, ";", &tknptr);
+
+	if (strcmp(token, lang) == 0)
+		return 1;	
+	return 0;
+}
+
 //this function will display the movies from a specified year
 void displayYear(struct Linked_List* list, int year) {
-	int x = 0;
-	int i = 0;
 	int len = 0;
 	int localYear = 0;
 	int count = 0;
@@ -124,6 +137,26 @@ void displayYear(struct Linked_List* list, int year) {
 	printf("\n");		
 }
 
+//this function will display the movie title and year correlating to an inputted language
+void displayLang(struct Linked_List* list, char* lang) {
+	int count = 0;
+	int boolean = -1;
+	struct node* temp = list->head;
+		
+	while (temp != NULL) {
+		boolean = movieLang(list, temp, lang);	//getting a true/false value (1 or 0) if movie has the language
+		
+		if (boolean == 1) 
+			printf("%s %s\n", temp->video->year, temp->video->title);	//displays movie of the inputted language
+	
+		temp = temp->next;
+	}
+
+	if (count == list->length)
+		printf("No movide data for the language: %s\n", lang);
+
+	printf("\n");
+}
 //this function frees all the dynamically allocated data associated with the linked list
 void free_listelements(struct Linked_List* list) {
 	int x = 0;
