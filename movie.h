@@ -15,7 +15,6 @@ struct movie {
 	char* rating;
 };
 
-//struct movie* create_movie();
 void fill_movieData(struct movie*, char*);
 void free_movie(struct movie* film);
 
