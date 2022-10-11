@@ -7,54 +7,26 @@
 #include <stdlib.h>
 #include <string.h>
 
-/*
-struct movie {
-	char* title;
-	char* language;
-	char* year;
-	char* rating;
-};
-*/
-
-//creates the movie data, initialized
-/*
-struct movie* create_movie() {
-	struct movie* film = malloc(sizeof(struct movie));
-	
-	film->title = malloc(20 * sizeof(char));			//this needs to be changed to a var amount of bytes!
-	film->year = -1;
-	film->language = malloc(20 * sizeof(char));		// this needs to be changed to a var amount of bytes!
-	film->rating = -1;
-	
-	return film;
-}
-*/
+//receives a line from the file, stores the data
 void fill_movieData(struct movie* film, char* dataline) {
 	char* token = NULL;
 	char* tknptr = NULL;
 
 	token = strtok_r(dataline, ",", &tknptr);
 	film->title = malloc((strlen(token) + 1)* sizeof(char));
-	strcpy(film->title, token);
-//	printf("title data...\t%s\n", film->title);
+	strcpy(film->title, token);			//title data stored
 
 	token = strtok_r(NULL, ",", &tknptr);
 	film->year = malloc((strlen(token) + 1)* sizeof(char));
-	strcpy(film->year, token);
-//	printf("year data...\t%s\n", film->year);
+	strcpy(film->year, token);			//film data stored
 
 	token = strtok_r(NULL, ",", &tknptr);
 	film->language = malloc((strlen(token) + 1)* sizeof(char));
-	strcpy(film->language, token);
-//	printf("language data...\t%s\n", film->language);
+	strcpy(film->language, token);			//language data stored
 
 	token = strtok_r(NULL, "\n", &tknptr);
 	film->rating = malloc((strlen(token) + 1)* sizeof(char));
-	strcpy(film->rating, token);
-//	printf("rating data...\t%s\n", film->rating);
-
-//	free(token);
-//	free(tknptr);
+	strcpy(film->rating, token);			//rating data stored
 }
 	
 
@@ -70,5 +42,5 @@ void free_movie(struct movie* film) {
 	film->rating = NULL;
 
 	free(film);
-	film = NULL;
+	film = NULL;			//all dynamic allocated variables are freed
 }
