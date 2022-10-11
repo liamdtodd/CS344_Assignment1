@@ -21,13 +21,14 @@ void readData(struct Linked_List* list, char* filepath) {
 	}
 	
 	nread = getline(&dataline, &length, movieData);			//takes in first line of file, then 'deletes' it (not from file, just moves cursor)
-
+	
 	while ((nread = getline(&dataline, &length, movieData)) != -1) {
 		struct movie* temp = malloc(sizeof(struct movie));
 		fill_movieData(temp, dataline);		//line of file is sent to be stored
 		add_back(list, temp);	//stores movie's data into a node of a linked list
 	}	
 
+	free(dataline);
 	dataline = NULL;
 	fclose(movieData);
 }
