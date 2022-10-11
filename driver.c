@@ -20,15 +20,14 @@ void readData(struct Linked_List* list, char* filepath) {
 		exit(1);
 	}
 	
-	nread = getline(&dataline, &length, movieData);
+	nread = getline(&dataline, &length, movieData);			//takes in first line of file, then 'deletes' it (not from file, just moves cursor)
 
 	while ((nread = getline(&dataline, &length, movieData)) != -1) {
 		struct movie* temp = malloc(sizeof(struct movie));
-		fill_movieData(temp, dataline);
-		add_back(list, temp);
+		fill_movieData(temp, dataline);		//line of file is sent to be stored
+		add_back(list, temp);	//stores movie's data into a node of a linked list
 	}	
 
-	free(dataline);
 	dataline = NULL;
 	fclose(movieData);
 }
@@ -52,7 +51,40 @@ void moviesYear(struct Linked_List* list) {
 
 //this function will show the highest rated movie from each year
 void moviesYearRating(struct Linked_List* list) {
+	double highRating = 0.0;
+	int x;
+	char* highTitle = NULL;
+	int highYear = 0;
+	struct node* temp = malloc(sizeof(struct node));
+	temp = list->head;
 
+	for (x = 1900; x < 2021; x++) {			//loop through the years 1900-2021, inclusive
+		while (temp != NULL) {
+			if ((x == atoi(temp->video->year) && (highRating < strtod(temp->video->rating, NULL)))) {
+				highRating = strtod(temp->video->rating, NULL);
+				highTitle = temp->video->title;
+				highYear = atoi(temp->video->year);
+			}				//checking to see if this node has a higher rating value
+			temp = temp->next;
+		}					//checked the entire list at x year for the highest rating value
+		temp = list->head;			//reset to head of list
+		
+		while (temp != NULL) {			
+			if ((highRating == strtod(temp->video->rating, NULL)) && (highYear == atoi(temp->video->year))) {
+				printf("%d %.1f %s\n", highYear, highRating, highTitle);	//print x year's highest rating
+				highRating = 0.0;
+				highTitle = NULL;
+				highYear = 0;		//reset highest rating value for the next x year
+			}
+			temp = temp->next;		//reset to head of list
+		}
+		temp = list->head;			//reset to head of list
+	}	
+		
+	temp = NULL;
+	free(temp);
+	temp = NULL;
+	printf("\n");
 }
 
 //this function will show the title and year of a movie from a specified language
@@ -62,7 +94,7 @@ void movieLanguage(struct Linked_List* list) {
 	scanf("%s", lang);
 	
 	printf("\nMovies in the language %s:\n", lang);
-	displayLang(list, lang);
+	displayLang(list, lang);				//called function will display the movie if it matches the specified language
 
 	free(lang);
 	lang = NULL;
@@ -79,6 +111,7 @@ void userInteractive(struct Linked_List* list) {
 	printf("4. Exit\n");
 	printf("\nPlease select an option: ");
 	scanf("%d", &ans);
+	printf("\n");
 
 	while (ans != 4) {
 		if (ans == 1)
@@ -89,7 +122,7 @@ void userInteractive(struct Linked_List* list) {
 			movieLanguage(list);			//the title and year of a movie from a specified language
 		else {
 			do {
-				printf("You have entered an invalid number: %d. Please enter a number 1-4\n");
+				printf("You have entered an invalid number: %d. Please enter a number 1-4\n", ans);
 				scanf("%d", &ans);
 			} while ((ans < 1) && (ans > 4));	//if user doesn't enter a number 1-4, will repeat until they do
 		}
@@ -101,6 +134,7 @@ void userInteractive(struct Linked_List* list) {
 			printf("4. Exit\n");
 			printf("\nPlease select an option: ");
 			scanf("%d", &ans);
+			printf("\n");
 		}				
 	}
 }
@@ -111,16 +145,16 @@ int main(int argc, char* argv[]) {
 		return 0;
 	}							//ensuring that the program is started with a file name
 
-	char* filepath = argv[1];
+	char* filepath = argv[1];				//file's name
 	struct Linked_List* list = create_linkedlist();
 
 	readData(list, filepath);
 	printf("Successfully read from %s and parsed through %d movies\n", filepath, list->length);
 
-	userInteractive(list);
+	userInteractive(list);					//all user interaction comes from called function
 
-	free_listelements(list);
-	free(list);
+	free_listelements(list);				//free dynamic allocated linked list's elements
+	free(list);						//free dynamic allocated linked list
 	list = NULL;
 
 	return 0;
